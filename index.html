@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makeup Sales Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css"> 
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <div class="container-fluid">
+            <a class=" navbar-brand" href="#"> Sasha Tapuwa Mupfukirenyi 57845 - Project </a>
+        </div>
+    </nav>
+
+   
+    <div class="container mt-5">
+        
+        <section id="introduction" class="text-center mb-5">
+            <h1> 2024 Makeup Sales Analysis </h1>
+            <p>A visual comparison of sales among top beauty brands in 2024 *information isn't accurate*</p>
+        </section>
+
+        <!-- Section: Charts -->
+        <section id="charts" class="mb-5">
+            <h2 class="text-center mb-4">Interactive Charts</h2>
+
+            <!-- Row of Pie Charts -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div id="leading-brands-pie-chart" class="chart-container"></div>
+                </div>
+                <div class="col-md-6">
+                    <div id="top-brands-pie-chart" class="chart-container"></div>
+                </div>
+            </div>
+          
+          
+          
+          <!-- Image Section -->
+<section id="images" class="text-center mb-5">
+    <h2>Top Makeup Brands</h2>
+  <br>
+  <!-- Dismissible Alert -->
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Info!</strong> This alert is to tell you that i didnt steal these images, i borrowed them for this project :)
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<br>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="https://edge.curalate.com/v1/img/0flsmmAqwTqQdcf33rjQFGD_LGgA5AQ3anSXTp_EETc=/sc/300x300?spatialTags=0.872995:0.331551,0.327116:0.560276,0.740316:0.661309,0.509326:0.784156,0.309900:0.786452" class="img-fluid" alt="Charlotte Tilbury">
+            <p>Charlotte Tilbury</p>
+        </div>
+        <div class="col-md-6">
+            <img src="https://novaccosmetics.com/wp-content/uploads/2023/08/fenty-beauty-300x300-1.png" class="img-fluid" alt="Fenty Beauty">
+            <p>Fenty Beauty</p>
+        </div>
+        
+    </div>
+</section>
+
+          
+                    
+
+            <!-- Bar Chart -->
+            <div id="annual-sales-chart" class="chart-container mt-5"></div>
+
+            <!-- Line Chart -->
+            <div id="market-share-chart" class="chart-container mt-5"></div>
+        </section>
+
+        <!-- table -->
+        <section id="tables" class="mb-5">
+            <h2 class="text-center mb-4">Sales Data Table</h2>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Charlotte Tilbury (in millions)</th>
+                        <th>Fenty Beauty (in millions)</th>
+                        <th>Top 2 Brands Total (in millions)</th>
+                    </tr>
+                </thead>
+                <tbody id="sales-data-table"></tbody>
+            </table>
+        </section>
+    </div>
+
+    <footer class="bg-info text-center text-white py-3">
+        © 2024 Makeup Sales Dashboard by Sasha
+    </footer>
+
+    <style type="text/css">
+        body {
+    font-family: 'Arial', sans-serif;
+}
+
+.chart-container {
+    width: 100%;
+    height: 600px; /* Increased height for better visibility */
+    margin-bottom: 20px;
+}
+
+.table {
+    font-size: 1.1rem; /* Improved table readability */
+}
+
+      </style>
+
+    <script>
+
+// Sample Sales Data
+const salesData = [
+    { year: 2020, charlotteTilbury: 250, fentyBeauty: 350, totalSales: 600 },
+    { year: 2021, charlotteTilbury: 520, fentyBeauty: 450, totalSales: 970 },
+    { year: 2022, charlotteTilbury: 646, fentyBeauty: 600, totalSales: 1246 },
+    { year: 2023, charlotteTilbury: 820, fentyBeauty: 690, totalSales: 1510 }
+];
+
+const topBrands = [
+    { name: "Charlotte Tilbury", sales: 820 },
+    { name: "Fenty Beauty", sales: 690 },
+    { name: "Maybelline", sales: 400 },
+    { name: "L'Oréal", sales: 100 },
+    { name: "Estee Lauder", sales: 650 },
+    { name: "MAC", sales: 500 }
+];
+
+// Populate Table
+const tableBody = document.getElementById('sales-data-table');
+salesData.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>${row.year}</td>
+        <td>${row.charlotteTilbury}</td>
+        <td>${row.fentyBeauty}</td>
+        <td>${row.totalSales}</td>
+    `;
+    tableBody.appendChild(tr);
+});
+
+// Pie Chart: Leading Brands
+Plotly.newPlot('leading-brands-pie-chart', [{
+    labels: ["Charlotte Tilbury", "Fenty Beauty"],
+    values: [salesData[salesData.length - 1].charlotteTilbury, salesData[salesData.length - 1].fentyBeauty],
+    type: 'pie',
+    marker: { colors: ['rgb(255,99,132)', 'rgb(54,162,235)'] }
+}], {
+    title: 'Top 2 Brands Sales Distribution'
+});
+
+// Pie Chart: Top Brands
+Plotly.newPlot('top-brands-pie-chart', [{
+    labels: topBrands.map(brand => brand.name),
+    values: topBrands.map(brand => brand.sales),
+    type: 'pie',
+    marker: {
+        colors: ['rgb(255,99,132)', 'rgb(54,162,235)', 'rgb(75,192,192)', 'rgb(153,102,255)', 'rgb(255,159,64)', 'rgb(255,205,86)']
+    }
+}], {
+    title: 'Top 6 Brands Sales Distribution'
+});
+
+// Bar Chart: Annual Sales Comparison
+const years = salesData.map(d => d.year);
+Plotly.newPlot('annual-sales-chart', [
+    {
+        x: years,
+        y: salesData.map(d => d.charlotteTilbury),
+        type: 'bar',
+        name: 'Charlotte Tilbury',
+        marker: { color: 'rgb(255,99,132)' }
+    },
+    {
+        x: years,
+        y: salesData.map(d => d.fentyBeauty),
+        type: 'bar',
+        name: 'Fenty Beauty',
+        marker: { color: 'rgb(54,162,235)' }
+    }
+], {
+    title: 'Annual Sales Comparison',
+    xaxis: { title: 'Year' },
+    yaxis: { title: 'Sales (in millions)' },
+    barmode: 'group'
+});
+
+// Line Plot: Market Share Over Time
+const totalSales = salesData.map(d => d.charlotteTilbury + d.fentyBeauty);
+const charlotteMarketShare = salesData.map(d => (d.charlotteTilbury / totalSales[salesData.indexOf(d)]) * 100);
+const fentyMarketShare = salesData.map(d => (d.fentyBeauty / totalSales[salesData.indexOf(d)]) * 100);
+
+Plotly.newPlot('market-share-chart', [
+    {
+        x: years,
+        y: charlotteMarketShare,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Charlotte Tilbury',
+        line: { color: 'rgb(255,99,132)' }
+    },
+    {
+        x: years,
+        y: fentyMarketShare,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Fenty Beauty',
+        line: { color: 'rgb(54,162,235)' }
+    }
+], {
+    title: 'Market Share Over Time',
+    xaxis: { title: 'Year' },
+    yaxis: { title: 'Market Share (%)' }
+});
+
+
+    </script>
+</body>
+</html>
